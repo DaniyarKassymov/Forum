@@ -1,0 +1,22 @@
+@model System.Collections.Generic.IEnumerable<Forum.ViewModels.ThemeVms.ForumVm>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+    <h2>Темы</h2>
+    <div class="row">
+        @foreach (var theme in Model)
+        {
+            <div class="theme_div">
+                <a asp-route-id="@theme.Id" asp-action="Details" class="theme_row">
+                    <div class="theme_fields col-4">@theme.Title</div>
+                    <div class="theme_fields col-4">@theme.CreationDate</div>
+                    <div class="theme_fields col-4">@theme.User.UserName</div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

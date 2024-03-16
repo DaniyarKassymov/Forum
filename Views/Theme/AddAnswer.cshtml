@@ -1,0 +1,16 @@
+@model Forum.ViewModels.AnswerVms.ThemeAnswerVm
+
+<div class="text-center">
+    <div class="row" id="results">
+         <div class="theme_div p-2">
+             <div class="theme_row">
+                 <div class="col-12">
+                     <div class="theme_fields">@Model.User.UserName @Model.CreationDate</div>
+                 </div>
+                 <div class="col-12">
+                     <div class="theme_fields">@Model.Text</div>
+                 </div>
+             </div>
+         </div>
+    </div>
+</div>

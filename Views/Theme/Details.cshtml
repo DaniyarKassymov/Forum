@@ -1,0 +1,79 @@
+@model Forum.ViewModels.PaginationVms.PageVm
+
+@{
+    ViewBag.Title = "Детальный просмотр темы";
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+    <div class="row">
+        <div class="theme_div">
+            <div class="theme_row">
+                <div class="theme_fields col-3">@Model.ForumVm.Title</div>
+                <div class="theme_fields col-3">@Model.ForumVm.CreationDate</div>
+                <div class="theme_fields col-3">@Model.ForumVm.User.UserName</div>
+                <div class="col-3">
+                    <a href="#writeAnswer" class="btn btn-outline-dark">Добавить ответ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <h2>Ответы</h2>
+        <div class="row">
+            @foreach (var answer in Model.Answers)
+            {
+                <div class="theme_div py-2">
+                    <div class="theme_row">
+                        <div class="col-12">
+                            <div class="theme_fields">@answer.User.UserName @answer.CreationDate</div>
+                        </div>
+                        <div class="col-12">
+                            <div class="theme_fields">@answer.Text</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="results"></div>
+    <input type="text" name="answer" id="writeAnswer"/>
+    <input type="button" id="submit" value="Введите ответ"/>
+</div>
+@if (Model.PaginationVm.HasPreviousPage)
+{
+    <a asp-action="Details"
+       asp-route-page="@(Model.PaginationVm.PageNumber - 1)"
+       class="btn btn-outline-dark">
+        <i class="fa-solid fa-arrow-right fa-rotate-180"></i>
+        Назад
+    </a>
+}
+@if (Model.PaginationVm.HasNextPage)
+{
+    <a asp-action="Details"
+       asp-route-page="@(Model.PaginationVm.PageNumber + 1)"
+       class="btn btn-outline-dark">
+        Вперед
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+}
+@section Scripts
+{
+    <script>
+        let scrollHeight = Math.max(
+          document.body.scrollHeight, document.documentElement.scrollHeight,
+          document.body.offsetHeight, document.documentElement.offsetHeight,
+          document.body.clientHeight, document.documentElement.clientHeight);
+    
+           $(document).ready(function () {
+               $('#submit').click(function (event) {
+                   event.preventDefault();
+                   let answer = $('#writeAnswer').val();
+                   answer = encodeURIComponent(answer);
+                   $('#results').append($('<div>').load('@Url.Action("AddAnswer", "Theme")?answer=' + answer + '&themeId=@Model.ForumVm.Id'));
+                   window.scrollTo(0, scrollHeight);
+               });
+           });
+    </script>
+}
